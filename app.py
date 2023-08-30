@@ -17,7 +17,7 @@ connect_db(app)
 q = User.query
 
 @app.get('/')
-def render_user_list():
+def redirect_user_list():
     """redirects to list of users"""
 
     return redirect('/users')
@@ -32,11 +32,28 @@ def render_user_list():
                            users = users)
 
 @app.get('/users/new')
-def render_user_list():
+def render_new_user_form():
     """"""
 
     users = q.all()
 
-    render_template('user_new.html',
+    return render_template('user_new.html',
                     users = users)
+
+@app.post('/users/new')
+def submit_new_user():
+    first_name = request.form['first_name']
+    last_name = request.form['last_name']
+    image_url = request.form['image_url']
+    new_user = User(first_name = first_name, last_name = last_name, image_url = image_url)
+
+    db.session.add(new_user)
+    db.session.commit()
+
+    return redirect('/users')
+
+@app.get('/users/<int:user_id>')
+def show_user_info(user_id):
+    user = q.get_or_404(user_id)
+    return render_template('user_detail.html', user = user)
 
