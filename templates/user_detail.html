@@ -4,7 +4,7 @@
 
 {% block content %}
 <h1> {{ user.first_name }} {{ user.last_name }} </h1>
-<img href="{{ user.image_url }}">
+<img src="{{ user.image_url }}">
 <form action ="/users/{{ user.id }}/edit">
   <button action="submit">Edit</button>
 </form>

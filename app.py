@@ -71,3 +71,14 @@ def submit_user_edit(user_id):
     new_url = request.form['image_url']
 
     user.update_user(new_first,new_last,new_url)
+    db.session.commit()
+
+    return redirect('/users')
+
+@app.post('/users/<int:user_id>/delete')
+def delete_user(user_id):
+    user = q.get_or_404(user_id)
+    db.session.delete(user)
+    db.session.commit()
+
+    return redirect('/users')
