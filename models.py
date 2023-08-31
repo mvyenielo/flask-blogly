@@ -33,10 +33,20 @@ class User(db.Model):
         "https://as2.ftcdn.net/jpg/01/36/08/69/220_F_136086944_knpNCEhMDywOOD3Ggu0ufUC2L2D8BVFm.jpg"
     )
 
+    def add_new_user(self):
+        db.session.add(self)
+        db.session.commit()
+
     def update_user(self,new_first,new_last,new_url):
         self.first_name = new_first
         self.last_name = new_last
         self.image_url = new_url
+
+        db.session.commit()
+
+    def delete_user(self):
+        db.session.delete(self)
+        db.session.commit()
 
 
 # We are able to create a new instance of a user on our site, and it shows

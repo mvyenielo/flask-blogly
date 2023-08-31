@@ -4,7 +4,7 @@ import os
 
 from flask import Flask, request, redirect, render_template
 from flask_debugtoolbar import DebugToolbarExtension
-from models import db, connect_db, User
+from models import connect_db, User
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
@@ -45,10 +45,9 @@ def submit_new_user():
     first_name = request.form['first_name']
     last_name = request.form['last_name']
     image_url = request.form['image_url']
-    new_user = User(first_name = first_name, last_name = last_name, image_url = image_url)
 
-    db.session.add(new_user)
-    db.session.commit()
+    new_user = User(first_name = first_name, last_name = last_name, image_url = image_url)
+    new_user.add_new_user()
 
     return redirect('/users')
 
@@ -71,14 +70,14 @@ def submit_user_edit(user_id):
     new_url = request.form['image_url']
 
     user.update_user(new_first,new_last,new_url)
-    db.session.commit()
+
 
     return redirect('/users')
 
 @app.post('/users/<int:user_id>/delete')
 def delete_user(user_id):
     user = q.get_or_404(user_id)
-    db.session.delete(user)
-    db.session.commit()
+
+    user.delete_user()
 
     return redirect('/users')
