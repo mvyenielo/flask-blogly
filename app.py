@@ -129,4 +129,33 @@ def submit_new_post(user_id):
 def show_post(post_id):
 
     post = Post.query.get_or_404(post_id)
+
     return render_template('post_detail.html',post=post)
+
+@app.get('/posts/<int:post_id>/edit')
+def show_edit_post_form(post_id):
+    """Renders edit post form"""
+
+    post = Post.query.get_or_404(post_id)
+    return render_template('post_edit.html', post=post)
+
+@app.post('/posts/<int:post_id>/edit')
+def submit_edit_post(post_id):
+
+    post = Post.query.get_or_404(post_id)
+    post.title = request.form['title']
+    post.content = request.form['content']
+
+    db.session.commit()
+
+    return redirect(f'/posts/{post.id}')
+
+@app.post('/posts/<int:post_id>/delete')
+def delete_post(post_id):
+    post = Post.query.get_or_404(post_id)
+    db.session.delete(post)
+    db.session.commit()
+
+    return redirect(f'/users/{post.user_id}')
+
+
