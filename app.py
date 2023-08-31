@@ -65,7 +65,9 @@ def show_user_info(user_id):
     """renders user info"""
 
     user = User.query.get_or_404(user_id)
-    return render_template('user_detail.html', user = user)
+    posts = user.posts
+    return render_template('user_detail.html', user = user,
+                           posts = posts)
 
 @app.get('/users/<int:user_id>/edit')
 def show_user_edit(user_id):
@@ -100,3 +102,31 @@ def delete_user(user_id):
     db.session.commit()
 
     return redirect('/users')
+
+# USER-POSTS ROUTES START HERE
+
+@app.get('/users/<int:user_id>/posts/new')
+def show_new_post_form(user_id):
+    """renders new post form"""
+
+    user = User.query.get_or_404(user_id)
+
+    return render_template('post_new.html', user = user)
+
+@app.post('/users/<int:user_id>/posts/new')
+def submit_new_post(user_id):
+
+    title = request.form['title']
+    content = request.form['content']
+
+    new_post = Post(title=title, content = content, user_id=user_id)
+    db.session.add(new_post)
+    db.session.commit()
+
+    return redirect(f'/users/{user_id}')
+
+@app.get('/posts/<int:post_id>')
+def show_post(post_id):
+
+    post = Post.query.get_or_404(post_id)
+    return render_template('post_detail.html',post=post)

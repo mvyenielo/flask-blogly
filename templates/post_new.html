@@ -3,8 +3,8 @@
 {% block title %} New Post {% endblock %}
 
 {% block content %}
-  <h2> Add Post for {{ user.first_name }} {{ user.last_name} }</h2>
-  <form action="/users/{{ user.id }}/posts/new" method="POST">
+  <h2> Add Post for {{ user.first_name }} {{ user.last_name}}</h2>
+  <form method="POST">
    <div>
     Title
     <input name="title">
