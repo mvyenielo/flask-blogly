@@ -9,6 +9,8 @@ def connect_db(app):
     db.app = app
     db.init_app(app)
 
+DEFAULT_IMAGE_URL = "https://as2.ftcdn.net/jpg/01/36/08/69/220_F_136086944_knpNCEhMDywOOD3Ggu0ufUC2L2D8BVFm.jpg"
+
 class User(db.Model):
     __tablename__="users"
 
@@ -29,25 +31,8 @@ class User(db.Model):
     image_url = db.Column(
         db.Text,
         nullable=True,
-        default=
-        "https://as2.ftcdn.net/jpg/01/36/08/69/220_F_136086944_knpNCEhMDywOOD3Ggu0ufUC2L2D8BVFm.jpg"
+        default= DEFAULT_IMAGE_URL
     )
-
-    def add_new_user(self):
-        db.session.add(self)
-        db.session.commit()
-
-    def update_user(self,new_first,new_last,new_url):
-        self.first_name = new_first
-        self.last_name = new_last
-        self.image_url = new_url
-
-        db.session.commit()
-
-    def delete_user(self):
-        db.session.delete(self)
-        db.session.commit()
-
 
 # We are able to create a new instance of a user on our site, and it shows
 # up in the database
@@ -62,5 +47,8 @@ class User(db.Model):
 # We get this error when we try to delete a user from the site:
 # sqlalchemy.exc.InvalidRequestError: Object '<User at 0x105bd92d0>'
 # is already attached to session '1' (this is '3')
+
+# We tried moving anything updating db into the "models.py" doc rather than having
+# it in the "app.py", and we're still getting the same error
 
 
