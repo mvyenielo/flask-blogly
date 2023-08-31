@@ -2,6 +2,7 @@
 from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
+
 def connect_db(app):
     """Connect to database."""
 
@@ -9,10 +10,12 @@ def connect_db(app):
     db.app = app
     db.init_app(app)
 
+
 DEFAULT_IMAGE_URL = "https://as2.ftcdn.net/jpg/01/36/08/69/220_F_136086944_knpNCEhMDywOOD3Ggu0ufUC2L2D8BVFm.jpg"
 
+
 class User(db.Model):
-    __tablename__="users"
+    __tablename__ = "users"
 
     id = db.Column(
         db.Integer,
@@ -30,28 +33,34 @@ class User(db.Model):
     image_url = db.Column(
         db.Text,
         nullable=True,
-        default= DEFAULT_IMAGE_URL
+        default=DEFAULT_IMAGE_URL
     )
+
 
 class Post(db.Model):
 
-    __tablename__="posts"
+    __tablename__ = "posts"
 
     id = db.Column(
         db.Integer,
         primary_key=True,
-        autoincrement=True)
+        autoincrement=True
+    )
 
     title = db.Column(
         db.String(50),
-        nullable=False)
+        nullable=False
+    )
 
     content = db.Column(
         db.Text,
-        nullable=False)
+        nullable=False
+    )
 
-    create_at = db.Column(
-        db.DateTime(timezone=False)
+    created_at = db.Column(
+        db.DateTime,
+        nullable=False,
+        default=db.func.now()
     )
 
     user_id = db.Column(
@@ -60,6 +69,3 @@ class Post(db.Model):
     )
 
     user = db.relationship('User', backref='posts')
-
-
-
