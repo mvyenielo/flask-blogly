@@ -57,3 +57,17 @@ def show_user_info(user_id):
     user = q.get_or_404(user_id)
     return render_template('user_detail.html', user = user)
 
+@app.get('/users/<int:user_id>/edit')
+def show_user_edit(user_id):
+    user = q.get_or_404(user_id)
+    return render_template('user_edit.html', user = user)
+
+@app.post('/users/<int:user_id>/edit')
+def submit_user_edit(user_id):
+    user = q.get_or_404(user_id)
+
+    new_first = request.form['first_name']
+    new_last = request.form['last_name']
+    new_url = request.form['image_url']
+
+    user.update_user(new_first,new_last,new_url)

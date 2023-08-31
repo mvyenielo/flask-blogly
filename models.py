@@ -33,3 +33,10 @@ class User(db.Model):
         "https://as2.ftcdn.net/jpg/01/36/08/69/220_F_136086944_knpNCEhMDywOOD3Ggu0ufUC2L2D8BVFm.jpg"
     )
 
+    def update_user(self,new_first,new_last,new_url):
+        self.first_name = new_first
+        self.last_name = new_last
+        self.image_url = new_url
+        db.session.commit()
+
+
