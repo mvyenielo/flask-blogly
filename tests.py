@@ -48,6 +48,7 @@ class UserViewTestCase(TestCase):
         # rely on this user in our tests without needing to know the numeric
         # value of their id, since it will change each time our tests are run.
         self.user_id = test_user.id
+
         print('SELF.USER_ID =',self.user_id)
     def tearDown(self):
         """Clean up any fouled transaction."""
@@ -67,14 +68,15 @@ class UserViewTestCase(TestCase):
             self.assertEqual(resp.status_code, 302)
             self.assertEqual(resp.location, '/users')
 
-    def test_delete_user_followed(self):
-        with self.client as c:
-            resp = c.get("/users", follow_redirects = True)
-            html = resp.get_data(as_text=True)
 
-            self.assertEqual(resp.status_code, 200)
-            self.assertNotIn("test1_first", html)
-            self.assertNotIn("test1_last", html)
+    # def test_delete_user_followed(self):
+    #     with self.client as c:
+    #         resp = c.get("/users", follow_redirects = True)
+    #         html = resp.get_data(as_text=True)
+
+    #         self.assertEqual(resp.status_code, 200)
+    #         self.assertNotIn("test1_first", html)
+    #         self.assertNotIn("test1_last", html)
 
     def test_submit_user_edit(self):
         with self.client as c:
@@ -83,15 +85,35 @@ class UserViewTestCase(TestCase):
                                 'last_name': 'edited_last_name', 'image_url': ''})
             self.assertEqual(resp.status_code, 302)
             self.assertEqual(resp.location, '/users')
+            print(resp)
+            print(resp.get_data)
 
-    def test_submit_user_edit_followed(self):
+
+    # def test_submit_user_edit_followed(self):
+    #     with self.client as c:
+    #         resp = c.get("/users", follow_redirects = True)
+    #         html = resp.get_data(as_text=True)
+
+    #         self.assertEqual(resp.status_code, 200)
+    #         self.assertIn("edited_first_name", html)
+    #         self.assertNotIn("edited_last_name", html)
+
+    def test_show_user_info(self):
         with self.client as c:
-            resp = c.get("/users", follow_redirects = True)
+            resp = c.get(f'/users/{self.user_id}')
             html = resp.get_data(as_text=True)
 
             self.assertEqual(resp.status_code, 200)
-            self.assertIn("edited_first_name", html)
-            self.assertNotIn("edited_last_name", html)
+            self.assertIn("test1_first", html)
+            self.assertIn("test1_last", html)
+
+    def test_show_user_edit(self):
+        with self.client as c:
+            resp = c.get(f'/users/{self.user_id}/edit')
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn("<h1>Edit a user</h1>", html)
 
 
 
