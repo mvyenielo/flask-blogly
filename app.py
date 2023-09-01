@@ -98,6 +98,7 @@ def submit_user_edit(user_id):
 def delete_user(user_id):
     """Handles user delete, removes user from database"""
     user = User.query.get_or_404(user_id)
+    # could loop over posts and delete: db.session.delete(user.post)
     db.session.delete(user)
     db.session.commit()
 
@@ -118,6 +119,8 @@ def submit_new_post(user_id):
 
     title = request.form['title']
     content = request.form['content']
+    # can query user with the user id and pass that in
+    # user
 
     new_post = Post(title=title, content = content, user_id=user_id)
     db.session.add(new_post)

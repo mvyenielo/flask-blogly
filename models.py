@@ -38,7 +38,7 @@ class User(db.Model):
 
 
 class Post(db.Model):
-
+    """Post doc string"""
     __tablename__ = "posts"
 
     id = db.Column(
